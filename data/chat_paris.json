@@ -1,0 +1,30 @@
+[
+    {
+        "role": "system",
+        "content": "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible."
+    },
+    {
+        "role": "user",
+        "content": "When was Paris founded ?"
+    },
+    {
+        "role": "assistant",
+        "content": "Paris was founded in the 3rd century BCE, specifically around 250 BCE."
+    },
+    {
+        "role": "user",
+        "content": "How was it called before ?"
+    },
+    {
+        "role": "assistant",
+        "content": "Before being called Paris, the city was known as Lutetia Parisiorum in Latin."
+    },
+    {
+        "role": "user",
+        "content": "Who ruled it than ?"
+    },
+    {
+        "role": "assistant",
+        "content": "During its early years, Paris was predominantly ruled by the Gaulish tribe known as the Parisii. However, with the Roman conquest of Gaul, the city eventually came under Roman rule."
+    }
+]
