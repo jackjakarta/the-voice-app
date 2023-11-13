@@ -46,10 +46,11 @@ class ChatGPT:
             }
         ]
 
-        return "\nChat reset successfully!"
+        # return "\nChat reset successfully!"
 
-    def save_chat(self, file):
+    def save_chat(self, chat_name):
         json_data = self.messages
+        file = f"data/chat_{chat_name}.json"
         save_json(file, json_data)
 
     def load_chat(self, file):
@@ -65,9 +66,10 @@ class ChatGPT:
         self.messages = [{"role": "system", "content": system_prompt}]
 
     def get_models(self):
-        models = self.client.models.list()
+        models_list = self.client.models.list().data
+        models = [x.id for x in models_list]
 
-        return models
+        return sorted(models)
 
     def speak(self):
         timestamp = RandomGenerator(8).random_string()
@@ -126,3 +128,9 @@ class ImageDallE:
                 print("\nFailed to get image!")
         except FileNotFoundError:
             print("\nFile not saved! Create a directory called 'image_folder'.")
+
+    @staticmethod
+    def delete_image(image_name):
+        image_path = f"image_folder/image_{image_name}.png"
+        os.remove(image_path)
+        print("\nImage deleted successfully.")
