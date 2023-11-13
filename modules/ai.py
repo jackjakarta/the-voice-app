@@ -50,10 +50,11 @@ class ChatGPT:
 
     def save_chat(self, chat_name):
         json_data = self.messages
-        file = f"data/chat_{chat_name}.json"
+        file = f"chats/chat_{chat_name}.json"
         save_json(file, json_data)
 
-    def load_chat(self, file):
+    def load_chat(self, chat_name):
+        file = f"chats/chat_{chat_name}.json"
         self.messages = load_json(file)
 
     @staticmethod

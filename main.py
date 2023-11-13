@@ -21,7 +21,6 @@ def main():
             if choice == 1:
                 assistant = ChatGPT()
                 transcribe = AudioProcess()
-                # recorder = AudioRecorder()
 
                 while True:
                     recorder = AudioRecorder()
@@ -39,40 +38,40 @@ def main():
                         break
 
             elif choice == 2:
-                ai = ChatGPT()
+                ai_1 = ChatGPT()
                 print("\nType 'r' to return to main menu.")
                 while True:
                     chat_input = input("\nYou: ")
                     if chat_input != "r":
-                        print(f"Assistant: {ai.ask(chat_input)}")
+                        print(f"Assistant: {ai_1.ask(chat_input)}")
                         continue
                     else:
                         chat_name = input("\nSave chat as: ")
-                        ai.save_chat(chat_name)
-                        ai.clear_chat()
+                        ai_1.save_chat(chat_name)
+                        ai_1.clear_chat()
                         print(f"\nChat '{chat_name}' saved successfully!")
                         break
 
             elif choice == 3:
-                chat_list = os.listdir("data")
+                chat_list = os.listdir("chats")
                 print("\nList of available chats:\n")
                 for x in chat_list:
                     print(x)
 
-                ai = ChatGPT()
-                chat_name = input("\nEnter chat name (eg. madeira, prog): ")
-                file_name = f"data/chat_{chat_name}.json"
-                ai.load_chat(file_name)
+                ai_2 = ChatGPT()
+                chat_name = input("\nEnter chat name (eg. travel, prog): ")
+                ai_2.load_chat(chat_name)
+
                 print("\nType 'r' to return to main menu.")
 
                 while True:
                     chat_input = input("\nYou: ")
                     if chat_input != "r":
-                        print(f"Assistant: {ai.ask(chat_input)}")
+                        print(f"Assistant: {ai_2.ask(chat_input)}")
                         continue
                     else:
-                        ai.save_chat(chat_name)
-                        ai.clear_chat()
+                        ai_2.save_chat(chat_name)
+                        ai_2.clear_chat()
                         break
 
             elif choice == 4:
@@ -92,10 +91,19 @@ def main():
                         break
 
             elif choice == 5:
-                text_for_tts = input("\nEnter text to generate tts: ")
+                list_voices = input("\nList of voices (y/n): ")
+                if list_voices == "y":
+                    with open("data/voices.txt", "r") as f:
+                        vc_list = f.read()
+                        print(vc_list)
+                        print("\nUse the voice IDs in the list when using custom voice!")
+                else:
+                    print("\nYou can choose a voice from the preset voice list before generating T-T-S.")
+
+                text_for_tts = input("\nEnter text to generate tts ('r' to return): ")
 
                 if text_for_tts != "r":
-                    print("\n1. Rachel\n2. Clyde\n3. Serena\n4. Nicole")
+                    print("\n1. Rachel\n2. Clyde\n3. Serena\n4. Nicole\n5. Custom")
 
                     voice = input("\nChoose voice: ")
                     if voice == "1":
@@ -106,6 +114,9 @@ def main():
                         voice = vc.Serena
                     elif voice == "4":
                         voice = vc.Nicole
+                    elif voice == "5":
+                        voice_code = input("\nInput voice id: ")
+                        voice = voice_code
                     else:
                         print("No voice chosen! Default voice auto selected.")
                         voice = vc.Rachel

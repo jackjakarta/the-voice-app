@@ -1,0 +1,30 @@
+[
+    {
+        "role": "system",
+        "content": "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible."
+    },
+    {
+        "role": "user",
+        "content": "How long is from paris to vienna by plane ?"
+    },
+    {
+        "role": "assistant",
+        "content": "The flight duration from Paris to Vienna is approximately 1 hour and 45 minutes."
+    },
+    {
+        "role": "user",
+        "content": "and by car ?"
+    },
+    {
+        "role": "assistant",
+        "content": "The driving distance from Paris to Vienna is approximately 1,050 kilometers (650 miles), and the estimated driving time is around 11-12 hours, depending on factors such as traffic and road conditions."
+    },
+    {
+        "role": "user",
+        "content": "and by train ?"
+    },
+    {
+        "role": "assistant",
+        "content": "The train journey from Paris to Vienna typically takes around 10-11 hours, depending on the specific train and route. It's worth noting that travel times may vary depending on the available connections and any layovers along the way."
+    }
+]
