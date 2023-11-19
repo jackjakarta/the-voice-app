@@ -91,14 +91,14 @@ def main():
                         break
 
             elif choice == 5:
-                list_voices = input("\nList of voices (y/n): ")
+                list_voices = input("\nGet list of voices ? (y/n): ")
                 if list_voices == "y":
                     with open("data/voices.txt", "r") as f:
                         vc_list = f.read()
                         print(vc_list)
                         print("\nUse the voice IDs in the list when using custom voice!")
                 else:
-                    print("\nYou can choose a voice from the preset voice list before generating T-T-S.")
+                    print("\nYou can still choose a voice from the preset list before generating the T-T-S file.")
 
                 text_for_tts = input("\nEnter text to generate tts ('r' to return): ")
 
@@ -118,13 +118,17 @@ def main():
                         voice_code = input("\nInput voice id: ")
                         voice = voice_code
                     else:
-                        print("No voice chosen! Default voice auto selected.")
+                        print(f"No voice chosen! Default voice auto selected.")
                         voice = vc.Rachel
 
-                    tts = TextToSpeech(text_for_tts, voice)
-                    print("\nWait for playback...")
-                    tts.play()
-                    continue
+                    play_choice = input("Do you want to play the file ? (y/n): ")
+                    if play_choice == "y":
+                        tts = TextToSpeech(text_for_tts, voice)
+                        print("\nWait for playback...")
+                        tts.play()
+                        continue
+                    else:
+                        continue
                 else:
                     continue
 

@@ -1,0 +1,22 @@
+[
+    {
+        "role": "system",
+        "content": "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible."
+    },
+    {
+        "role": "user",
+        "content": "Where is London located?\n"
+    },
+    {
+        "role": "assistant",
+        "content": "London is located in the southeastern part of England, United Kingdom."
+    },
+    {
+        "role": "user",
+        "content": "When is the best time to visit ?\n"
+    },
+    {
+        "role": "assistant",
+        "content": "The best time to visit London is generally during the spring (April to June) or during the early autumn (September to November). During these seasons, the weather is usually mild, and you can enjoy pleasant temperatures and fewer crowds compared to the peak summer months. However, keep in mind that London's weather can be unpredictable, so it's a good idea to be prepared for changing conditions regardless of the season."
+    }
+]

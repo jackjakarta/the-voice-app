@@ -44,7 +44,7 @@ class Duration:
 
             return f"\nIt took {self.duration:.2f} seconds to complete the task."
         except TypeError:
-            return "\nYou didn't called the start_timer() method before!"
+            return "\nYou didn't call the start_timer() method before!"
 
 
 def load_json(filename):

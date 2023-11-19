@@ -26,5 +26,13 @@
     {
         "role": "assistant",
         "content": "The train journey from Paris to Vienna typically takes around 10-11 hours, depending on the specific train and route. It's worth noting that travel times may vary depending on the available connections and any layovers along the way."
+    },
+    {
+        "role": "user",
+        "content": "I want to stay for two weeks, what can I do there ?"
+    },
+    {
+        "role": "assistant",
+        "content": "During a two-week stay in Vienna, there are several activities and attractions you can explore:\n\n1. Visit historic landmarks: Discover the grandeur of Sch\u00f6nbrunn Palace, the Hofburg Imperial Palace, St. Stephen's Cathedral, and Belvedere Palace.\n2. Explore museums: Spend time in world-class museums like the Kunsthistorisches Museum, Albertina, and the Museum of Art History.\n3. Stroll through beautiful gardens: Take a leisurely walk in the Vienna Prater or the Stadtpark, known for its statue of Johann Strauss.\n4. Experience Viennese culture: Attend a performance at the Vienna State Opera, catch a classical music concert, or indulge in delicious pastries at traditional Viennese cafes.\n5. Discover the Naschmarkt: Explore the bustling market with a variety of fresh produce, international cuisine, and unique shops.\n6. Take a Danube River cruise: Enjoy a scenic boat tour on the Danube River, which offers stunning views of the city and surrounding areas.\n7. Visit the Vienna Woods: Take a day trip to the Vienna Woods (Wienerwald) for hiking, exploring picturesque towns like Baden, or relaxing in natural surroundings.\n8. Explore the Wachau Valley: Embark on a day trip to the beautiful Wachau Valley, known for its vineyards, charming villages, and the stunning Melk Abbey.\n9. Attend a concert or opera: Vienna is renowned for its music scene, and experiencing a classical music concert or opera performance is a must.\n10. Discover Viennese cuisine: Sample traditional dishes such as Wiener Schnitzel, Sachertorte, and Apfelstrudel in local restaurants and cafes.\n\nRemember to check for any COVID-19 travel restrictions or specific guidelines before planning your trip."
     }
 ]

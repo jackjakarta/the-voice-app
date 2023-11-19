@@ -76,8 +76,8 @@ class ChatGPT:
         timestamp = RandomGenerator(8).random_string()
         speech_file_path = f"audio/openai_tts_{timestamp}.wav"
         speech = self.client.audio.speech.create(
-            model="tts-1",
-            voice="alloy",
+            model="tts-1-hd",
+            voice="fable",
             input=self.completion.choices[0].message.content
         )
 
@@ -106,8 +106,8 @@ class ImageDallE:
         self.response = self.client.images.generate(
             model=self.model,
             prompt=self.prompt,
-            size="1024x1024",
-            quality="standard",
+            size="1792x1024",
+            quality="hd",
             n=1,
         )
         self.image_url = self.response.data[0].url
