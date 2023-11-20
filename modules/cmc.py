@@ -1,9 +1,8 @@
 import requests
-from keys import CMC_PRO_API_KEY
-
+from decouple import config
 
 API_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
-API_KEY = CMC_PRO_API_KEY
+API_KEY = config("CMC_PRO_API_KEY")
 
 
 def crypto_price(user_input):

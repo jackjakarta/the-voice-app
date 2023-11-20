@@ -3,16 +3,17 @@ import pygame
 import time
 import requests
 from openai import OpenAI
+from decouple import config
 
 from modules.utility import load_json, save_json, RandomGenerator
-from keys import OPENAI_API_KEY
+# from keys import OPENAI_API_KEY
 
 
 class ChatGPT:
     """ChatGPT Class"""
 
     def __init__(self, model="gpt-3.5-turbo"):
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        self.client = OpenAI(api_key=config("OPENAI_API_KEY"))
         self.model = model
         self.messages = [
             {
@@ -95,7 +96,7 @@ class ImageDallE:
     """Image Generation with the OpenAI DALL-E model."""
 
     def __init__(self, model="dall-e-3"):
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        self.client = OpenAI(api_key=config("OPENAI_API_KEY"))
         self.model = model
         self.prompt = None
         self.response = None

@@ -5,9 +5,10 @@ import string
 import time
 import requests
 from openai import OpenAI
+from decouple import config
 
 from modules.voices import Rachel
-from keys import OPENAI_API_KEY, ELEVENLABS_API_KEY
+# from keys import OPENAI_API_KEY, ELEVENLABS_API_KEY
 
 
 class AudioRecorder:
@@ -30,7 +31,7 @@ class AudioRecorder:
 class AudioProcess:
     """Transcribe and Translate to EN text from audio file."""
     def __init__(self):
-        self.client = OpenAI(api_key=OPENAI_API_KEY)
+        self.client = OpenAI(api_key=config("OPENAI_API_KEY"))
         self.file = None
         self.response_text = None
         self.model = "whisper-1"
@@ -64,7 +65,7 @@ class TextToSpeech:
         headers = {
             "Accept": "audio/mpeg",
             "Content-Type": "application/json",
-            "xi-api-key": ELEVENLABS_API_KEY
+            "xi-api-key": config("ELEVENLABS_API_KEY")
         }
 
         data = {

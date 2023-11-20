@@ -160,5 +160,4 @@ cython_debug/
 .idea/
 tools/
 .DS_Store
-keys.py
 blank_sheet.py
