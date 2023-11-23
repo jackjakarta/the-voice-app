@@ -1,9 +1,9 @@
+import os
+import openai
+import modules.voices as vc
 from modules.ai import ImageDallE, ChatGPT
 from modules.audio import AudioRecorder, AudioProcess, TextToSpeech
 from modules.cmc import crypto_price
-import modules.voices as vc
-import os
-import openai
 
 
 def main_menu():
