@@ -4,11 +4,11 @@ import random
 import string
 import time
 import requests
+import os
 from openai import OpenAI
 from decouple import config
 
 from modules.voices import Rachel
-# from keys import OPENAI_API_KEY, ELEVENLABS_API_KEY
 
 
 class AudioRecorder:
@@ -16,16 +16,18 @@ class AudioRecorder:
     def __init__(self):
         self.__recognizer = sr.Recognizer()
         self.__random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        self.file_name = f"audio/recording_{self.__random_string}.wav"
+        self.audio_dir = "audio/"
+        self.file_name = f"recording_{self.__random_string}.wav"
+        os.makedirs(self.audio_dir, exist_ok=True)
 
     def record(self):
         with sr.Microphone() as source:
             print("\nRecording audio...")
             audio = self.__recognizer.listen(source)
 
-        with open(self.file_name, "wb") as file:
+        with open(os.path.join(self.audio_dir, self.file_name), "wb+") as file:
             file.write(audio.get_wav_data())
-            print(f"Audio recorded and saved as 'recording_{self.__random_string}.wav' in 'audio/' folder!")
+            print(f"Audio recorded and saved as '{self.file_name}' in '{self.audio_dir}' folder!")
 
 
 class AudioProcess:
@@ -58,7 +60,12 @@ class TextToSpeech:
         self.text = text
         self.voice = voice
 
-    def play(self):
+        timestamp = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        self.audio_dir = "audio/"
+        self.file_name = f"eleven_tts_{timestamp}.mp3"
+        os.makedirs(self.audio_dir, exist_ok=True)
+
+    def generate(self):
         chunk_size = 1024
         url = f"https://api.elevenlabs.io/v1/text-to-speech/{self.voice}"
 
@@ -78,14 +85,17 @@ class TextToSpeech:
         }
 
         response = requests.post(url, json=data, headers=headers)
-        timestamp = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        with open(f"audio/eleven_tts_{timestamp}.mp3", "wb") as f:
+
+        with open(os.path.join(self.audio_dir, self.file_name), "wb+") as f:
             for chunk in response.iter_content(chunk_size=chunk_size):
                 if chunk:
                     f.write(chunk)
 
+        print(f"\nAudio saved to '{self.audio_dir}{self.file_name}'.")
+
+    def play(self):
+        print("\nWait for playback...")
         pygame.mixer.init()
-        sound = pygame.mixer.Sound(f"audio/eleven_tts_{timestamp}.mp3")
+        sound = pygame.mixer.Sound(os.path.join(self.audio_dir, self.file_name))
         sound.play()
         time.sleep(sound.get_length())
-        print(f"\nAudio saved to 'audio/eleven_tts_{timestamp}.mp3'.")

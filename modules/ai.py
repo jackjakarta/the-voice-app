@@ -6,7 +6,6 @@ from openai import OpenAI
 from decouple import config
 
 from modules.utility import load_json, save_json, RandomGenerator
-# from keys import OPENAI_API_KEY
 
 
 class ChatGPT:
@@ -51,17 +50,23 @@ class ChatGPT:
 
     def save_chat(self, chat_name):
         json_data = self.messages
-        file = f"chats/chat_{chat_name}.json"
-        save_json(file, json_data)
+        chats_dir = "chats/"
+        file = f"chat_{chat_name}.json"
+        os.makedirs(chats_dir, exist_ok=True)
+        save_json(os.path.join(chats_dir, file), json_data)
 
     def load_chat(self, chat_name):
-        file = f"chats/chat_{chat_name}.json"
-        self.messages = load_json(file)
+        chats_dir = "chats/"
+        file = f"chat_{chat_name}.json"
+        os.makedirs(chats_dir, exist_ok=True)
+        self.messages = load_json(os.path.join(chats_dir, file))
 
     @staticmethod
     def delete_chat(chat_name):
-        script_path = f"data/chat_{chat_name}.json"
-        os.remove(script_path)
+        chats_dir = "chats/"
+        file = f"chat_{chat_name}.json"
+        os.makedirs(chats_dir, exist_ok=True)
+        os.remove(os.path.join(chats_dir, file))
         print("\nChat deleted successfully.")
 
     def set_system_message(self, system_prompt):
@@ -75,21 +80,24 @@ class ChatGPT:
 
     def speak(self):
         timestamp = RandomGenerator(8).random_string()
-        speech_file_path = f"audio/openai_tts_{timestamp}.wav"
+        speech_file_dir = "audio/"
+        speech_file_name = f"openai_tts_{timestamp}.wav"
+        os.makedirs(speech_file_dir, exist_ok=True)
+
         speech = self.client.audio.speech.create(
             model="tts-1-hd",
             voice="fable",
             input=self.completion.choices[0].message.content
         )
 
-        speech.stream_to_file(speech_file_path)
+        speech.stream_to_file(os.path.join(speech_file_dir, speech_file_name))
 
         print("\nWait for Playback...")
         pygame.mixer.init()
-        sound = pygame.mixer.Sound(speech_file_path)
+        sound = pygame.mixer.Sound(os.path.join(speech_file_dir, speech_file_name))
         sound.play()
         time.sleep(sound.get_length())
-        print(f"\nAudio saved to '{speech_file_path}'.")
+        print(f"\nAudio saved to '{os.path.join(speech_file_dir, speech_file_name)}'.")
 
 
 class ImageDallE:
@@ -117,22 +125,22 @@ class ImageDallE:
 
     def save_image(self, name=RandomGenerator(6).random_string()):
         request_response = requests.get(self.image_url, stream=True)
-        try:
-            if request_response.status_code == 200:
-                timestamp = name
-                image_filename = f"image_folder/image_{timestamp}.png"
+        if request_response.status_code == 200:
+            timestamp = name
+            image_dir = "images/"
+            image_filename = f"image_{timestamp}.png"
+            os.makedirs(image_dir, exist_ok=True)
 
-                with open(image_filename, "wb") as f:
-                    for chunk in request_response.iter_content(8192):
-                        f.write(chunk)
-                print(f"\nImaged saved at: {image_filename}.")
-            else:
-                print("\nFailed to get image!")
-        except FileNotFoundError:
-            print("\nFile not saved! Create a directory called 'image_folder'.")
+            with open(os.path.join(image_dir, image_filename), "wb+") as f:
+                for chunk in request_response.iter_content(8192):
+                    f.write(chunk)
+            print(f"\nImaged saved at: {image_dir}{image_filename}.")
+        else:
+            print("\nFailed to get image!")
 
     @staticmethod
     def delete_image(image_name):
-        image_path = f"image_folder/image_{image_name}.png"
-        os.remove(image_path)
+        image_dir = "image_folder/"
+        image_filename = f"image_{image_name}.png"
+        os.remove(os.path.join(image_dir, image_filename))
         print("\nImage deleted successfully.")

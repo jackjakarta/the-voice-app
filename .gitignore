@@ -161,3 +161,6 @@ cython_debug/
 tools/
 .DS_Store
 blank_sheet.py
+audio/
+chats/
+images/

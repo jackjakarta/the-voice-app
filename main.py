@@ -3,6 +3,7 @@ from modules.audio import AudioRecorder, AudioProcess, TextToSpeech
 from modules.cmc import crypto_price
 import modules.voices as vc
 import os
+import openai
 
 
 def main_menu():
@@ -21,36 +22,43 @@ def main():
             if choice == 1:
                 assistant = ChatGPT()
                 transcribe = AudioProcess()
+                try:
+                    while True:
+                        recorder = AudioRecorder()
+                        recorder.record()
+                        print(f"\nYou: {transcribe.transcribe(os.path.join(recorder.audio_dir, recorder.file_name))}")
 
-                while True:
-                    recorder = AudioRecorder()
-                    recorder.record()
-                    print(f"\nYou: {transcribe.transcribe(recorder.file_name)}")
-
-                    if "stop" not in transcribe.response_text.lower():
-                        print(f"Assistant: {assistant.ask(transcribe.response_text)}")
-                        assistant.speak()
-                        continue
-                    else:
-                        chat_name = input("\nSave chat as: ")
-                        assistant.save_chat(chat_name)
-                        assistant.clear_chat()
-                        break
+                        if "stop" not in transcribe.response_text.lower():
+                            print(f"Assistant: {assistant.ask(transcribe.response_text)}")
+                            assistant.speak()
+                            continue
+                        else:
+                            chat_name = input("\nSave chat as: ")
+                            assistant.save_chat(chat_name)
+                            assistant.clear_chat()
+                            break
+                except openai.InternalServerError as e:
+                    print(f"\nOpenAI Server Error: {e}.\n\nTry again later...")
+                    continue
 
             elif choice == 2:
                 ai_1 = ChatGPT()
                 print("\nType 'r' to return to main menu.")
-                while True:
-                    chat_input = input("\nYou: ")
-                    if chat_input != "r":
-                        print(f"Assistant: {ai_1.ask(chat_input)}")
-                        continue
-                    else:
-                        chat_name = input("\nSave chat as: ")
-                        ai_1.save_chat(chat_name)
-                        ai_1.clear_chat()
-                        print(f"\nChat '{chat_name}' saved successfully!")
-                        break
+                try:
+                    while True:
+                        chat_input = input("\nYou: ")
+                        if chat_input != "r":
+                            print(f"Assistant: {ai_1.ask(chat_input)}")
+                            continue
+                        else:
+                            chat_name = input("\nSave chat as: ")
+                            ai_1.save_chat(chat_name)
+                            ai_1.clear_chat()
+                            print(f"\nChat '{chat_name}' saved successfully!")
+                            break
+                except openai.InternalServerError as e:
+                    print(f"\nOpenAI Server not responding. Error: {e}.\n\nTry again later...")
+                    continue
 
             elif choice == 3:
                 chat_list = os.listdir("chats")
@@ -64,31 +72,39 @@ def main():
 
                 print("\nType 'r' to return to main menu.")
 
-                while True:
-                    chat_input = input("\nYou: ")
-                    if chat_input != "r":
-                        print(f"Assistant: {ai_2.ask(chat_input)}")
-                        continue
-                    else:
-                        ai_2.save_chat(chat_name)
-                        ai_2.clear_chat()
-                        break
+                try:
+                    while True:
+                        chat_input = input("\nYou: ")
+                        if chat_input != "r":
+                            print(f"Assistant: {ai_2.ask(chat_input)}")
+                            continue
+                        else:
+                            ai_2.save_chat(chat_name)
+                            ai_2.clear_chat()
+                            break
+                except openai.InternalServerError as e:
+                    print(f"\nOpenAI Server not responding. Error: {e}.\n\nTry again later...")
+                    continue
 
             elif choice == 4:
                 dall_e = ImageDallE()
-                while True:
-                    img_prompt = input("\nEnter image description ('r' to return): ")
-                    if img_prompt != "r":
-                        print(dall_e.generate_image(img_prompt))
-                        save = input("\nDo you want to save the image ? (y/n): ")
-                        if save == "y":
-                            image_name = input("\nEnter name for image: ")
-                            dall_e.save_image(image_name)
-                            continue
+                try:
+                    while True:
+                        img_prompt = input("\nEnter image description ('r' to return): ")
+                        if img_prompt != "r":
+                            print(dall_e.generate_image(img_prompt))
+                            save = input("\nDo you want to save the image ? (y/n): ")
+                            if save == "y":
+                                image_name = input("\nEnter name for image: ")
+                                dall_e.save_image(image_name)
+                                continue
+                            else:
+                                continue
                         else:
-                            continue
-                    else:
-                        break
+                            break
+                except openai.InternalServerError as e:
+                    print(f"\nOpenAI Server not responding. Error: {e}.\n\nTry again later...")
+                    continue
 
             elif choice == 5:
                 list_voices = input("\nGet list of voices ? (y/n): ")
@@ -121,10 +137,11 @@ def main():
                         print(f"No voice chosen! Default voice auto selected.")
                         voice = vc.Rachel
 
-                    play_choice = input("Do you want to play the file ? (y/n): ")
+                    tts = TextToSpeech(text_for_tts, voice)
+                    tts.generate()
+
+                    play_choice = input("\nDo you want to play the file ? (y/n): ")
                     if play_choice == "y":
-                        tts = TextToSpeech(text_for_tts, voice)
-                        print("\nWait for playback...")
                         tts.play()
                         continue
                     else:
@@ -144,9 +161,13 @@ def main():
 
             elif choice == 7:
                 models = ChatGPT().get_models()
-                print(f"\nList of models:\n\n{models}")
-                # for x in models:
-                #     print(x)
+                try:
+                    print(f"\nList of models:\n\n{models}")
+                    # for x in models:
+                    #     print(x)
+                except openai.InternalServerError as e:
+                    print(f"\nOpenAI Server not responding. Error: {e}.\n\nTry again later...")
+                    continue
 
             elif choice == 8:
                 print("\nBye Bye!")
