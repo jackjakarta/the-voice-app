@@ -2,30 +2,49 @@ import string
 import random
 import time
 import json
+from datetime import datetime, timezone, timedelta
 
 
 class RandomGenerator:
     """Random String Generator. Default length is 10 characters."""
-    def __init__(self, length=10):
+    def __init__(self):
+        self.length = None
+
+    def random_string(self, length=6):
         self.length = length
 
-    def random_string(self):
-        s = string.ascii_lowercase + string.digits
-        o = "".join(random.choices(s, k=self.length))
+        characters = string.ascii_lowercase + string.digits
+        random_generate = "".join(random.choices(characters, k=self.length))
 
-        return o
+        return random_generate
 
-    def random_digits(self):
-        s = string.digits
-        o = "".join(random.choices(s, k=self.length))
+    def random_digits(self, length=6):
+        self.length = length
 
-        return o
+        characters = string.digits
+        random_generate = "".join(random.choices(characters, k=self.length))
 
-    def random_letters(self):
-        s = string.ascii_letters
-        o = "".join(random.choices(s, k=self.length))
+        return random_generate
 
-        return o
+    def random_letters(self, length=6):
+        self.length = length
+
+        characters = string.ascii_letters
+        random_generate = "".join(random.choices(characters, k=self.length))
+
+        return random_generate
+
+    @staticmethod
+    def timestamp():
+        timestamp = time.time()
+        time_zone = timezone(timedelta(hours=1))  # Adjust time zone
+        datetime_obj = datetime.fromtimestamp(timestamp, tz=time_zone)
+        formatted_date = datetime_obj.strftime('%d-%m-%Y')
+        formatted_time = datetime_obj.strftime('%H-%M')
+
+        timestamp_formatted = f"{formatted_date}_{formatted_time}"
+
+        return timestamp_formatted
 
 
 class Duration:

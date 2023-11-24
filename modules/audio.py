@@ -1,13 +1,13 @@
-import speech_recognition as sr
 import pygame
-import random
-import string
 import time
 import requests
 import os
+import speech_recognition as sr
+import soundfile as sf
+from pedalboard import Pedalboard, Reverb
 from openai import OpenAI
 from decouple import config
-
+from modules.utility import RandomGenerator
 from modules.voices import Rachel
 
 
@@ -15,7 +15,7 @@ class AudioRecorder:
     """Audio recorder that records audio from the default microphone."""
     def __init__(self):
         self.__recognizer = sr.Recognizer()
-        self.__random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
+        self.__random_string = RandomGenerator().random_string()
         self.audio_dir = "audio/"
         self.file_name = f"recording_{self.__random_string}.wav"
         os.makedirs(self.audio_dir, exist_ok=True)
@@ -28,6 +28,13 @@ class AudioRecorder:
         with open(os.path.join(self.audio_dir, self.file_name), "wb+") as file:
             file.write(audio.get_wav_data())
             print(f"Audio recorded and saved as '{self.file_name}' in '{self.audio_dir}' folder!")
+
+    def play(self):
+        print("\nWait for playback...")
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound(os.path.join(self.audio_dir, self.file_name))
+        sound.play()
+        time.sleep(sound.get_length())
 
 
 class AudioProcess:
@@ -60,8 +67,8 @@ class TextToSpeech:
         self.text = text
         self.voice = voice
 
-        timestamp = "".join(random.choices(string.ascii_lowercase + string.digits, k=10))
         self.audio_dir = "audio/"
+        timestamp = RandomGenerator().random_string()
         self.file_name = f"eleven_tts_{timestamp}.mp3"
         os.makedirs(self.audio_dir, exist_ok=True)
 
@@ -99,3 +106,19 @@ class TextToSpeech:
         sound = pygame.mixer.Sound(os.path.join(self.audio_dir, self.file_name))
         sound.play()
         time.sleep(sound.get_length())
+
+
+class AudioFx:
+    def __init__(self):
+        self.audio, self.sample_rate = None, None
+        self.processed_audio = None
+        self.audio_dir = "audio/"
+
+    def reverb(self, audio):
+        self.audio, self.sample_rate = sf.read(os.path.join(self.audio_dir, audio))
+        timestamp = RandomGenerator().timestamp()
+
+        reverb = Reverb(room_size=0.6)
+        board = Pedalboard([reverb])
+        self.processed_audio = board(self.audio, self.sample_rate)
+        sf.write(os.path.join(self.audio_dir, f"reverb_{timestamp}.wav"), self.processed_audio, self.sample_rate)
