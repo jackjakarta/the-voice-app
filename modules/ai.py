@@ -123,7 +123,7 @@ class ImageDallE:
 
         return f"\nImage URL: {self.image_url}"
 
-    def save_image(self, name=RandomGenerator(6).random_string()):
+    def save_image(self, name=RandomGenerator().random_string()):
         request_response = requests.get(self.image_url, stream=True)
         if request_response.status_code == 200:
             timestamp = name
