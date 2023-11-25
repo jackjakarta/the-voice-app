@@ -4,6 +4,7 @@ import modules.voices as vc
 from modules.ai import ImageDallE, ChatGPT
 from modules.audio import AudioRecorder, AudioProcess, TextToSpeech
 from modules.cmc import crypto_price
+from modules.utility import load_json
 
 
 def main_menu():
@@ -109,10 +110,10 @@ def main():
             elif choice == 5:
                 list_voices = input("\nGet list of voices ? (y/n): ")
                 if list_voices == "y":
-                    with open("data/voices.txt", "r") as f:
-                        vc_list = f.read()
-                        print(vc_list)
-                        print("\nUse the voice IDs in the list when using custom voice!")
+                    voices_list = load_json("data/voices.json")
+                    for k, v in voices_list.items():
+                        print(f"{k}: {v}")
+                    print("\nUse the voice IDs in the list when using custom voice!")
                 else:
                     print("\nYou can still choose a voice from the preset list before generating the T-T-S file.")
 
@@ -162,9 +163,9 @@ def main():
             elif choice == 7:
                 models = ChatGPT().get_models()
                 try:
-                    print(f"\nList of models:\n\n{models}")
-                    # for x in models:
-                    #     print(x)
+                    # print(f"\nList of models:\n\n{models}")
+                    for x in models:
+                        print(x)
                 except openai.InternalServerError as e:
                     print(f"\nOpenAI Server not responding. Error: {e}.\n\nTry again later...")
                     continue

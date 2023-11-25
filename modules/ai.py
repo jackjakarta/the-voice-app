@@ -79,7 +79,7 @@ class ChatGPT:
         return sorted(models)
 
     def speak(self):
-        timestamp = RandomGenerator(8).random_string()
+        timestamp = RandomGenerator().random_string()
         speech_file_dir = "audio/"
         speech_file_name = f"openai_tts_{timestamp}.wav"
         os.makedirs(speech_file_dir, exist_ok=True)
