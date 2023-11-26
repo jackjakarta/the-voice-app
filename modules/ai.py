@@ -140,7 +140,7 @@ class ImageDallE:
 
     @staticmethod
     def delete_image(image_name):
-        image_dir = "image_folder/"
+        image_dir = "images/"
         image_filename = f"image_{image_name}.png"
         os.remove(os.path.join(image_dir, image_filename))
         print("\nImage deleted successfully.")
