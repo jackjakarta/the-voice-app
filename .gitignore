@@ -161,8 +161,10 @@ cython_debug/
 tools/
 .DS_Store
 blank_sheet.py
+blank_sheet_2.py
+blank_sheet_3.py
 audio/
 chats/
 images/
-gpt_assistant_api.py
+tools/gpt_assistant_api.py
 gpt_assistant_api_class.py
